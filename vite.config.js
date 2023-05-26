@@ -8,6 +8,7 @@ export default defineConfig({
         vue({
             template: {transformAssetUrls}
         }),
-        quasar()
-    ],
+        quasar({
+        })
+    ]
 })

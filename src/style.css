@@ -1,5 +1,30 @@
 
 body {
-  margin: 0;
-  display: flex;
+    margin: 0;
+    display: flex;
+}
+
+
+.light {
+    --primary: #9400d3;
+    --secondary: #8bc34a;
+    --accent: #ffa500;
+    --dark: #1d1d1d;
+    --bg: #121212;
+    --positive: #00d600;
+    --negative: #d60000;
+    --info: #006cd6;
+    --warning: #f5f500;
+}
+
+.dark {
+    --primary: #00bfff;
+    --secondary: #ffa500;
+    --accent: #9400d3;
+    --dark: #1d1d1d;
+    --bg: #121212;
+    --positive: #33ff33;
+    --negative: #ff3333;
+    --info: #3399ff;
+    --warning: #ffff33;
 }
