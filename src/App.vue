@@ -5,7 +5,6 @@ import avatarAi from './assets/avatar-ai.svg';
 import { ref } from 'vue'
 import { useQuasar } from 'quasar'
 const $q = useQuasar()
-
 </script>
 
 <template>

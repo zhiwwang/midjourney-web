@@ -1,5 +1,7 @@
 <script setup>
 import {onMounted, ref, watch} from "vue";
+import Message from "./Message.vue";
+import {http} from "../api"
 
 defineProps({
   avatarMe: String,
@@ -16,26 +18,68 @@ const scrollAreaRef = ref(null)
 const prompt = ref('')
 const file = ref([])
 
+function newAiMessage(text, url) {
+  const message = {
+    username: 'AI',
+    text: text,
+    url: url,
+    timestamp: new Date().toLocaleTimeString(),
+  };
+  messageList.value.push(message)
+  return message
+}
+
+function fetchTaskResult(taskId, message) {
+  http.get(`/mj/task/${taskId}/fetch`).then((data) => {
+    const {status, imageUrl, failReason} = data
+    if (status === 'FAILURE') {
+      // 生成报错消息
+      message.text = failReason
+      return
+    }
+    if (status === 'NOT_START' || status === 'SUBMITTED' || status === 'IN_PROGRESS') {
+      // 生成报错消息
+      setTimeout(() => {
+        fetchTaskResult(taskId, message)
+      }, 10000)
+      return
+    }
+    message.url = imageUrl
+  })
+}
+
 const onSubmit = () => {
-  if (prompt.value.trim() === '') {
+  const text = prompt.value
+  // 空内容不处理
+  if (text.trim() === '') {
     prompt.value = ''
     return
   }
+  // 加到消息列表
   messageList.value.push({
     username: 'user',
-    text: prompt.value,
+    text: text,
     url: '',
     timestamp: new Date().toLocaleTimeString(),
   })
+  // 清空输入框
   prompt.value = ''
-  //TODO 请求响应
-  messageList.value.push({
-    username: 'AI',
-    text: '',
-    url: '',
-    timestamp: new Date().toLocaleTimeString(),
+  // 请求响应
+  http.post('/mj/trigger/submit', {
+    action: 'IMAGINE',
+    prompt: 'text'
+  }).then((data) => {
+    const {code, description, result} = data
+    debugger
+    if (code !== 1 && code !== 2) {
+      // 生成报错消息
+      newAiMessage(description);
+      return
+    }
+    const taskId = result
+    const message = newAiMessage('', '')
+    fetchTaskResult(taskId, message)
   })
-
 }
 const scrollToBottom = () => {
   scrollAreaRef.value.setScrollPosition('vertical', scrollAreaRef.value.getScroll().verticalSize, 300)
@@ -60,19 +104,8 @@ onMounted(() => {
           :bg-color="message.username === 'user'? ($q.dark.isActive?'light-green-8':'blue-6'):($q.dark.isActive?'purple-8':'orange-6')"
           :text-color=" $q.dark.isActive?'white':'black'"
       >
-        <div v-if="message.image || message.text">
-          <q-img
-              v-if="message.image"
-              :src="message.image"
-              style="height: 140px; max-width: 150px"
-          />
-          <p
-              v-if="message.text"
-          >
-            {{ message.text }}
-          </p>
-        </div>
         <q-spinner-dots v-if="!message.image && !message.text"/>
+        <message v-else :message="message"/>
       </q-chat-message>
     </q-scroll-area>
     <q-form
