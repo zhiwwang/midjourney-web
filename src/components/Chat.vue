@@ -48,8 +48,6 @@ function updateAiMessage(index, failReason, imageUrl, action, id, prompt, canUV)
 function fetchTaskResult(taskId, index) {
   http.get(`/mj/task/${taskId}/fetch`).then((data) => {
     const {status, imageUrl, failReason, action, id, prompt} = data
-    // change image proxy
-    const imageProxyUrl = imageUrl.replace(/^https:\/\/cdn\.discordapp\.com/, conf.imgBaseUrl)
     if (status === 'FAILURE') {
       // 生成报错消息
       updateAiMessage(index, failReason, '', action, id, prompt, false);
@@ -60,16 +58,18 @@ function fetchTaskResult(taskId, index) {
       // 再次查询
       setTimeout(() => {
         fetchTaskResult(taskId, index)
-      }, 5000)
+      }, 8000)
       return
     }
+    // change image proxy
+    const imageProxyUrl = imageUrl.replace(/^https:\/\/cdn\.discordapp\.com/, conf.imgBaseUrl)
     updateAiMessage(index, '', imageProxyUrl, action, id, prompt, action !== 'UPSCALE');
     isLoading.value = false
   }).catch(() => {
     // 再次查询
     setTimeout(() => {
       fetchTaskResult(taskId, index)
-    }, 30000)
+    }, 32000)
   })
 }
 
