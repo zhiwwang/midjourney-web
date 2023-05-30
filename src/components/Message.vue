@@ -1,5 +1,5 @@
 <script setup>
-import { NImage } from 'naive-ui'
+import { NImage, NGradientText } from 'naive-ui'
 
 defineProps({
   message: Object
@@ -11,7 +11,20 @@ defineProps({
       v-if="message.url"
       :src="message.url"
       width="200"
-  />
+  >
+    <q-badge color="orange" floating>22</q-badge>
+  </n-image>
+  <n-gradient-text
+      :gradient="{
+      deg: 180,
+      from: '#f2c97d',
+      to: '#f08a00'
+    }"
+      class="text-weight-bolder text-h6"
+      v-if="message.command"
+  >
+    {{ message.command }}
+  </n-gradient-text>
   <p
       v-if="message.text"
   >
@@ -20,5 +33,4 @@ defineProps({
 </template>
 
 <style scoped>
-
 </style>

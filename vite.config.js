@@ -5,14 +5,19 @@ import {viteMockServe} from 'vite-plugin-mock';
 
 // https://vitejs.dev/config/
 export default defineConfig(({mode}) => ({
-    plugins: [
-        vue({
-            template: {transformAssetUrls}
-        }),
-        viteMockServe({
-            mockPath: './mock',  // mock文件存放的位置
-            localEnabled: mode === 'mock' //在开发环境中启用 mock
-        }),
-        quasar({})
-    ]
+    plugins: [vue({
+        template: {transformAssetUrls}
+    }), viteMockServe({
+        mockPath: './mock',  // mock文件存放的位置
+        localEnabled: mode === 'mock' //在开发环境中启用 mock
+    }), quasar({})],
+    server: {
+        proxy: {
+            '/api': {
+                target:'XXX',
+                changeOrigin: true,
+                rewrite: path => path.replace(/^\/api/, '')
+            }
+        }
+    }
 }))
