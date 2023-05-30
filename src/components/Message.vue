@@ -15,18 +15,18 @@ defineProps({
   >
   </n-image>
   <div class="col-auto column q-gutter-y-sm " v-if="message.url && message.canUV">
-    <q-btn-group class="col" push>
-      <q-btn color="blue-grey-5" push glossy label="U 1" style="width: 54px; height: 36px" @click="uvCallback(message.taskId, 'UPSCALE', 1)"/>
-      <q-btn color="blue-grey-5" push glossy label="U 2" style="width: 54px; height: 36px" @click="uvCallback(message.taskId, 'UPSCALE', 1)"/>
-      <q-btn color="blue-grey-5" push glossy label="U 3" style="width: 54px; height: 36px" @click="uvCallback(message.taskId, 'UPSCALE', 1)"/>
-      <q-btn color="blue-grey-5" push glossy label="U 4" style="width: 54px; height: 36px" @click="uvCallback(message.taskId, 'UPSCALE', 1)"/>
-    </q-btn-group>
-    <q-btn-group class="col" push>
-      <q-btn color="blue-grey-5" push glossy label="V 1" style="width: 54px; height: 36px" @click="uvCallback(message.taskId, 'VARIATION', 1)"/>
-      <q-btn color="blue-grey-5" push glossy label="V 2" style="width: 54px; height: 36px" @click="uvCallback(message.taskId, 'VARIATION', 1)"/>
-      <q-btn color="blue-grey-5" push glossy label="V 3" style="width: 54px; height: 36px" @click="uvCallback(message.taskId, 'VARIATION', 1)"/>
-      <q-btn color="blue-grey-5" push glossy label="V 4" style="width: 54px; height: 36px" @click="uvCallback(message.taskId, 'VARIATION', 1)"/>
-    </q-btn-group>
+    <div class="col">
+      <q-btn class="uv-btn q-mr-sm" size="sm" color="primary" push label="U 1" no-wrap @click="uvCallback(message.taskId, 'UPSCALE', 1)"/>
+      <q-btn class="uv-btn q-mr-sm" size="sm" color="primary" push label="U 2" no-wrap @click="uvCallback(message.taskId, 'UPSCALE', 1)"/>
+      <q-btn class="uv-btn q-mr-sm" size="sm" color="primary" push label="U 3" no-wrap @click="uvCallback(message.taskId, 'UPSCALE', 1)"/>
+      <q-btn class="uv-btn q-mr-sm" size="sm" color="primary" push label="U 4" no-wrap @click="uvCallback(message.taskId, 'UPSCALE', 1)"/>
+    </div>
+    <div class="col">
+      <q-btn class="uv-btn q-mr-sm" size="sm" color="secondary" push label="V 1" no-wrap @click="uvCallback(message.taskId, 'VARIATION', 1)"/>
+      <q-btn class="uv-btn q-mr-sm" size="sm" color="secondary" push label="V 2" no-wrap @click="uvCallback(message.taskId, 'VARIATION', 1)"/>
+      <q-btn class="uv-btn q-mr-sm" size="sm" color="secondary" push label="V 3" no-wrap @click="uvCallback(message.taskId, 'VARIATION', 1)"/>
+      <q-btn class="uv-btn q-mr-sm" size="sm" color="secondary" push label="V 4" no-wrap @click="uvCallback(message.taskId, 'VARIATION', 1)"/>
+    </div>
   </div>
   <p
       v-if="message.text"
@@ -36,4 +36,8 @@ defineProps({
 </template>
 
 <style scoped>
+.uv-btn {
+  width: 44px !important;
+  height: 32px !important;
+}
 </style>
